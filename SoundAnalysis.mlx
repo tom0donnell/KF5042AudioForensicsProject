@@ -1,0 +1,37 @@
+Sound Analysis
+[x, fs] = audioread('training_data.wav')
+
+x = x(:, 1);
+
+% Convert Sample Data into Time
+N = length(x);
+t = (0:N-1)/fs;
+N/fs
+
+% Plot Noise Signal with Time and Amplitude labels
+plot(t, x)
+grid on
+xlabel('Time(s)')
+ylabel('Amplitude')
+title('Sound Analysis')
+
+% Extra Information
+maxValue = max(x)
+minValue = min(x)
+meanValue = mean(x)
+stdValue = std(x)
+
+spectrogram(x, 1024, 512, 1024, fs, 'yaxis')
+title('Spectrogram of Training Data')
+
+% Periodogram Plot
+W = hanning(N, 'periodic')
+periodogram(x, W, N, fs, 'power')
+[X, f] = periodogram(x, W, N, fs, 'power');
+X = 20*log10(sqrt(X)*sqrt(2));
+
+semilogx(f, X)
+
+% Histogram Plot
+histogram(X)
+title('Histogram')
